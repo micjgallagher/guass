@@ -8,11 +8,11 @@ int main(int argc, char ** argv){
     setElement(&m, 2.52, 0, 0);
     setElement(&m, 3, 0, 1);
     setElement(&m, 5, 1, 0);
-    setElement(&m, 10, 0, 1);
+    setElement(&m, 10, 1, 1);
     printMatrix(&m);
 
     //testing matrix reduction
-    reduceMatrix(&m);
+    // reduceMatrix(&m);
     printMatrix(&m);
 
     destroyMatrix(&m);
@@ -23,7 +23,7 @@ Matrix createMatrix(int r, int c){
     Matrix output;
     output.rows = r;
     output.columns = c;
-    output.body = calloc(sizeof(double) * r * c, 0); //Initialize the memory here so that each matrix is useable by default
+    output.body = calloc(sizeof(double) * r * c, sizeof(double)); //Initialize the memory here so that each matrix is useable by default
 
     return output;
 }
@@ -65,7 +65,7 @@ void reduceMatrix(Matrix *matrix){
         multiplyRow(matrix, r, 1/coefficient); //TODO ad step for checking if coefficient is missing an swapping if not
 
         //Zero out the rest of function
-        for(int r2; r2<matrix->rows; r2++){
+        for(int r2=0; r2<matrix->rows; r2++){
             if (r2 == r){
                 continue; //no need to reduce because this row contains a desired coefficient
             }
