@@ -23,3 +23,13 @@ void reduceMatrix(Matrix * matrix);
 
 void multiplyRow(Matrix * matrix, int row, double coefficient);
 void multiplyRowThenAdd(Matrix * matrix, int row_source, int row_destination, double coefficient);
+
+//Parsing Functions
+
+/*
+ * Variable must be 26 characters long, function will write to the array. Returns amount of variables identified
+ */
+int identifyVariables(char variables[26], int argc, char **argv);
+int isLowerAlpha(char c);
+int isNumeric(char c);
+int containsChar(char *string, int size, char c);

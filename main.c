@@ -4,6 +4,15 @@
 #include "main.h"
 
 int main(int argc, char ** argv){
+    if(argc > 1){
+        for(int i=1;i<argc;i++){
+            printf("%s\n", argv[i]);
+        }
+    }
+    char vars[26];
+    int num_var = identifyVariables(vars, argc, argv);
+    printf("Identified %d variables\n", num_var);
+
     Matrix m = createMatrix(2, 2);
     setElement(&m, 2.52, 0, 0);
     setElement(&m, 3, 0, 1);
@@ -111,4 +120,42 @@ void printMatrix(Matrix *matrix){
     printf("\n");
 }
 
+int identifyVariables(char variables[26], int argc, char **argv){
+    //test comment
+    const int array_size = 26;
+    int occupied = 0;
+    for(int string_index = 1; string_index < argc; string_index++){
+        //debug 
+        char *current = argv[string_index];
+        printf("Now examining : %s\n", current);
 
+        while (*current!='\0'){
+            if(isLowerAlpha(*current)){
+                if(!containsChar(variables, occupied, *current)){
+                    variables[occupied] = *current;
+                    occupied++;
+                }
+            }
+            current++;
+        }
+
+    }
+    return occupied;
+}
+
+int isLowerAlpha(char c){
+    return c >= 'a' && c <= 'z';
+}
+
+int isNumeric(char c){
+    return c>= '0' && c<='9';
+}
+
+int containsChar(char *string, int size, char c){
+    for(int i=0; i<size; i++){
+        if(string[i] == c){
+            return 1;
+        }
+    }
+    return 0;
+}
