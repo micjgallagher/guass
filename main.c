@@ -4,13 +4,17 @@
 #include "main.h"
 
 int main(int argc, char ** argv){
-    Matrix m = createMatrix(3, 3);
-    setElement(&m, 10.2, 0, 0);
-    setElement(&m, 5.2, 0, 1);
-    setElement(&m, 2.52, 0, 2);
+    Matrix m = createMatrix(2, 2);
+    setElement(&m, 2.52, 0, 0);
+    setElement(&m, 3, 0, 1);
+    setElement(&m, 5, 1, 0);
+    setElement(&m, 10, 0, 1);
     printMatrix(&m);
-    multiplyRow(&m, 0, 0.5);
+
+    //testing matrix reduction
+    reduceMatrix(&m);
     printMatrix(&m);
+
     destroyMatrix(&m);
     return 0;
 }
@@ -56,6 +60,20 @@ void destroyMatrix(Matrix *matrix){
 
 void reduceMatrix(Matrix *matrix){
     //Bulk of the program will be in this function
+    for(int r=0; r <matrix->rows;r++ ){
+        double coefficient = getElement(matrix, r, r); //this works becaues we reduce across the diagonal
+        multiplyRow(matrix, r, 1/coefficient); //TODO ad step for checking if coefficient is missing an swapping if not
+
+        //Zero out the rest of function
+        for(int r2; r2<matrix->rows; r2++){
+            if (r2 == r){
+                continue; //no need to reduce because this row contains a desired coefficient
+            }
+
+            double coefficient_to_clean = getElement(matrix, r2, r); 
+            multiplyRowThenAdd(matrix, r, r2, -coefficient);
+        }
+    }
 }
 
 void multiplyRow(Matrix *matrix, int row, double coefficient){
