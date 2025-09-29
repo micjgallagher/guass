@@ -10,9 +10,18 @@ int main(int argc, char ** argv){
     setElement(&m, 5, 1, 0);
     setElement(&m, 10, 1, 1);
     printMatrix(&m);
+    /*
+    setElement(&m, 10, 0,0);
+    setElement(&m, 10, 0,1);
+    setElement(&m, 5, 1,0);
+    setElement(&m, 5, 1,1);
+    printMatrix(&m);
+    multiplyRowThenAdd(&m, 1, 0, -2);
+    printMatrix(&m);
+    */
 
     //testing matrix reduction
-    // reduceMatrix(&m);
+    reduceMatrix(&m);
     printMatrix(&m);
 
     destroyMatrix(&m);
@@ -64,14 +73,16 @@ void reduceMatrix(Matrix *matrix){
         double coefficient = getElement(matrix, r, r); //this works becaues we reduce across the diagonal
         multiplyRow(matrix, r, 1/coefficient); //TODO ad step for checking if coefficient is missing an swapping if not
 
+        printMatrix(matrix);
         //Zero out the rest of function
         for(int r2=0; r2<matrix->rows; r2++){
             if (r2 == r){
                 continue; //no need to reduce because this row contains a desired coefficient
             }
 
-            double coefficient_to_clean = getElement(matrix, r2, r); 
-            multiplyRowThenAdd(matrix, r, r2, -coefficient);
+            double coefficient_to_clean = getElement(matrix, r2, r) / getElement(matrix, r, r); 
+            printf("Coefficient %lf\n", coefficient_to_clean);
+            multiplyRowThenAdd(matrix, r, r2, -coefficient_to_clean);
         }
     }
 }
@@ -93,10 +104,11 @@ void multiplyRowThenAdd(Matrix *matrix, int row_source, int row_destination, dou
 void printMatrix(Matrix *matrix){
     for(int r=0; r < matrix->rows;r++){
         for(int c=0; c < matrix->columns;c++){
-           printf("%lf ", getElement(matrix, r, c)); 
+            printf("%lf ", getElement(matrix, r, c)); 
         }
         printf("\n");
     }
+    printf("\n");
 }
 
 
