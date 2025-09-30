@@ -13,6 +13,18 @@ int main(int argc, char ** argv){
     int num_var = identifyVariables(vars, argc, argv);
     printf("Identified %d variables\n", num_var);
 
+    for(int i=0;i<num_var;i++){
+        printf("%c ", vars[i]);
+    }
+    printf("\n");
+    
+    if(argc > 1){
+        //construct matrix from equations
+        Matrix augmented = createMatrix(argc-1, num_var);
+        collectCoefficients(&augmented, vars, num_var, argv[1], 0);
+        destroyMatrix(&augmented);
+    }
+
     Matrix m = createMatrix(2, 2);
     setElement(&m, 2.52, 0, 0);
     setElement(&m, 3, 0, 1);
@@ -158,4 +170,32 @@ int containsChar(char *string, int size, char c){
         }
     }
     return 0;
+}
+
+
+Matrix constructMatrixFromEquations(int num_equations, int num_variables, char variables[26], char ** equations){
+    int num_columns = num_variables + 1; //The additional column is to augment the matrix to collect the constants
+    Matrix output = createMatrix(num_equations, num_columns);
+    //collect coefficients
+    return output;
+}
+
+
+void collectCoefficients(Matrix *matrix, char *variables, int num_variables, char *equation, int row){
+    char buff[100]; //Determine whether to cap the size of the variables, or make an expandable buffer
+    int buff_pos = 0;
+    while(*equation != '\0'){
+        if(isNumeric(*equation)){
+            buff[buff_pos]=*equation;
+            buff_pos++;
+        } else if(buff_pos > 0){
+            buff[buff_pos] = '\0';
+            double c = atof(buff);
+            //debug 
+            printf("extracted %lf\n", c);
+            memset(buff, 0, 100);
+            buff_pos = 0;
+        }
+        equation++;
+    }
 }

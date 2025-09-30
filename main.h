@@ -33,3 +33,6 @@ int identifyVariables(char variables[26], int argc, char **argv);
 int isLowerAlpha(char c);
 int isNumeric(char c);
 int containsChar(char *string, int size, char c);
+
+Matrix constructMatrixFromEquations(int num_equations, int num_variables, char variables[26], char **equations);
+void collectCoefficients(Matrix *matrix, char variables[26], int num_variables, char * equation, int row);
