@@ -34,6 +34,8 @@ int isLowerAlpha(char c);
 int isNumeric(char c);
 int containsChar(char *string, int size, char c);
 
+//equations should point to the first valid equation
+//num_equations should be the actual number of equations, not simply argc
 Matrix constructMatrixFromEquations(int num_equations, int num_variables, char variables[26], char **equations);
 void collectCoefficients(Matrix *matrix, char variables[26], int num_variables, char * equation, int row);
 

@@ -23,8 +23,7 @@ int main(int argc, char ** argv){
     
     if(argc > 1){
         //construct matrix from equations
-        Matrix augmented = createMatrix(argc-1, num_var);
-        collectCoefficients(&augmented, vars, num_var, argv[1], 0);
+        Matrix augmented = constructMatrixFromEquations(argc - 1, num_var, vars, argv + 1);
         printf("\nTESTING MATRIX\n");
         printMatrix(&augmented);
         printf("\nTESTING MATRIX\n");
@@ -191,6 +190,9 @@ Matrix constructMatrixFromEquations(int num_equations, int num_variables, char v
     int num_columns = num_variables + 1; //The additional column is to augment the matrix to collect the constants
     Matrix output = createMatrix(num_equations, num_columns);
     //collect coefficients
+    for(int e=0; e<num_equations; e++){
+        collectCoefficients(&output, variables, num_variables, equations[e], e);
+    }
     return output;
 }
 
