@@ -36,3 +36,7 @@ int containsChar(char *string, int size, char c);
 
 Matrix constructMatrixFromEquations(int num_equations, int num_variables, char variables[26], char **equations);
 void collectCoefficients(Matrix *matrix, char variables[26], int num_variables, char * equation, int row);
+
+//Array helper functions
+//Negative -1 indicates value could not be found 
+int locateInArray(char * array, int array_length, char target);

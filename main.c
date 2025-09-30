@@ -3,13 +3,16 @@
 #include <string.h>
 #include "main.h"
 
+const int var_array_size = 26;
+
+
 int main(int argc, char ** argv){
     if(argc > 1){
         for(int i=1;i<argc;i++){
             printf("%s\n", argv[i]);
         }
     }
-    char vars[26];
+    char vars[var_array_size];
     int num_var = identifyVariables(vars, argc, argv);
     printf("Identified %d variables\n", num_var);
 
@@ -22,6 +25,9 @@ int main(int argc, char ** argv){
         //construct matrix from equations
         Matrix augmented = createMatrix(argc-1, num_var);
         collectCoefficients(&augmented, vars, num_var, argv[1], 0);
+        printf("\nTESTING MATRIX\n");
+        printMatrix(&augmented);
+        printf("\nTESTING MATRIX\n");
         destroyMatrix(&augmented);
     }
 
@@ -172,6 +178,14 @@ int containsChar(char *string, int size, char c){
     return 0;
 }
 
+int locateInArray(char *array, int array_length, char target){
+    for (int i=0; i<array_length; i++){
+        if(array[i] == target){
+            return i;
+        }
+    }
+    return -1;
+}
 
 Matrix constructMatrixFromEquations(int num_equations, int num_variables, char variables[26], char ** equations){
     int num_columns = num_variables + 1; //The additional column is to augment the matrix to collect the constants
@@ -190,9 +204,18 @@ void collectCoefficients(Matrix *matrix, char *variables, int num_variables, cha
             buff_pos++;
         } else if(buff_pos > 0){
             buff[buff_pos] = '\0';
-            double c = atof(buff);
+            double coefficient = atof(buff);
+            int column =  locateInArray(variables, num_variables, *equation); //Because the variables are put in the array in the order found, we can use that order to define their corresponding column in the matrix 
+            
+            if(column < 0){
+                fprintf(stderr, "ERROR: UNABLE TO LOCATE VARIABLE. THIS MESSAGE SHOULD NEVER APPEAR");
+                return;
+            }
+
+            setElement(matrix,coefficient, row, column);
+
             //debug 
-            printf("extracted %lf\n", c);
+            printf("extracted %lf\n", coefficient);
             memset(buff, 0, 100);
             buff_pos = 0;
         }
